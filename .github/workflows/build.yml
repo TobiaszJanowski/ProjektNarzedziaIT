@@ -1,7 +1,10 @@
 name: Build EXE
+
 on:
   push:
     branches: [ master ]
+  schedule:
+    - cron: '0 12 * * 0' 
   workflow_dispatch:
 
 jobs:
@@ -12,8 +15,7 @@ jobs:
       - name: Install dependencies
         run: ./installResources.ps1
       - name: Build with PyInstaller
-        run: |
-          python -m PyInstaller --onefile --noconsole --name ui ui.py
+        run: python -m PyInstaller --onefile --noconsole --add-data "converter.py;." ui.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
