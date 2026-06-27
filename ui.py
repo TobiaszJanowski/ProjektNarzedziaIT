@@ -3,8 +3,10 @@ import os
 
 if getattr(sys, 'frozen', False):
     os.chdir(sys._MEIPASS)
+    sys.path.append(sys._MEIPASS)
 
 import converter
+
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtCore import QThread, pyqtSignal
 class ConvertWorker(QThread):
