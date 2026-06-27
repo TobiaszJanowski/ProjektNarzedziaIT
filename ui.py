@@ -6,9 +6,9 @@ if getattr(sys, 'frozen', False):
     sys.path.append(sys._MEIPASS)
 
 import converter
-
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtCore import QThread, pyqtSignal
+
 class ConvertWorker(QThread):
     finished = pyqtSignal(str)
     def run(self):
@@ -18,6 +18,7 @@ class ConvertWorker(QThread):
             self.finished.emit("Sukces!")
         except Exception as e:
             self.finished.emit(f"Błąd: {str(e)}")
+
 class App(QWidget):
     def __init__(self):
         super().__init__()
@@ -28,8 +29,8 @@ class App(QWidget):
         self.setLayout(layout)
     def start_conversion(self):
         self.worker = ConvertWorker()
-        self.worker.finished.connect(lambda msg: print(msg))
         self.worker.start()
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = App()
