@@ -1,7 +1,11 @@
 import sys
+import os
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtCore import QThread, pyqtSignal
-from converter import load_data, save_data
+
+# Dodanie ścieżki do modułów
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import converter
 
 class ConvertWorker(QThread):
     finished = pyqtSignal(str)
@@ -10,8 +14,8 @@ class ConvertWorker(QThread):
         self.src, self.dst = src, dst
     def run(self):
         try:
-            data = load_data(self.src)
-            save_data(data, self.dst)
+            data = converter.load_data(self.src)
+            converter.save_data(data, self.dst)
             self.finished.emit("Sukces!")
         except Exception as e:
             self.finished.emit(f"Błąd: {str(e)}")
@@ -20,7 +24,7 @@ class App(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        self.btn = QPushButton("Konwertuj (Asynchronicznie)")
+        self.btn = QPushButton("Konwertuj")
         self.btn.clicked.connect(self.start_conversion)
         layout.addWidget(self.btn)
         self.setLayout(layout)
