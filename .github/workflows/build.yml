@@ -1,0 +1,21 @@
+name: Build EXE
+on:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: ./installResources.ps1
+      - name: Build with PyInstaller
+        run: pyinstaller --onefile --noconsole converter.py
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: converter-exe
+          path: dist/converter.exe
