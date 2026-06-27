@@ -2,11 +2,7 @@ import sys
 import os
 
 if getattr(sys, 'frozen', False):
-    bundle_dir = os.path.dirname(sys.executable)
-else:
-    bundle_dir = os.path.dirname(os.path.abspath(__file__))
-
-sys.path.insert(0, bundle_dir)
+    os.chdir(sys._MEIPASS)
 
 import converter
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
