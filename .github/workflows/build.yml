@@ -8,11 +8,12 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: ./installResources.ps1
       - name: Build with PyInstaller
-        run: python -m PyInstaller --onefile --noconsole --hidden-import converter ui.py
+        run: |
+          python -m PyInstaller --onefile --noconsole --name ui ui.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
