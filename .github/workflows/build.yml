@@ -12,7 +12,7 @@ jobs:
       - name: Install dependencies
         run: ./installResources.ps1
       - name: Build with PyInstaller
-        run: python -m PyInstaller --onefile --noconsole ui.py
+        run: python -m PyInstaller --onefile --noconsole --hidden-import converter ui.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

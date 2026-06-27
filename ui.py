@@ -1,8 +1,13 @@
-import sys, os
+import sys
+import os
+
 if getattr(sys, 'frozen', False):
-    sys.path.append(os.path.dirname(sys.executable))
+    bundle_dir = os.path.dirname(sys.executable)
 else:
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    bundle_dir = os.path.dirname(os.path.abspath(__file__))
+
+sys.path.insert(0, bundle_dir)
+
 import converter
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtCore import QThread, pyqtSignal
