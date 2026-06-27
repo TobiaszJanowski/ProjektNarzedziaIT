@@ -1,25 +1,20 @@
-import sys
-import os
+import sys, os
+if getattr(sys, 'frozen', False):
+    sys.path.append(os.path.dirname(sys.executable))
+else:
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import converter
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtCore import QThread, pyqtSignal
-
-# Dodanie ścieżki do modułów
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import converter
-
 class ConvertWorker(QThread):
     finished = pyqtSignal(str)
-    def __init__(self, src, dst):
-        super().__init__()
-        self.src, self.dst = src, dst
     def run(self):
         try:
-            data = converter.load_data(self.src)
-            converter.save_data(data, self.dst)
+            data = converter.load_data("in.json")
+            converter.save_data(data, "out.yml")
             self.finished.emit("Sukces!")
         except Exception as e:
             self.finished.emit(f"Błąd: {str(e)}")
-
 class App(QWidget):
     def __init__(self):
         super().__init__()
@@ -29,10 +24,9 @@ class App(QWidget):
         layout.addWidget(self.btn)
         self.setLayout(layout)
     def start_conversion(self):
-        self.worker = ConvertWorker("in.json", "out.yml")
+        self.worker = ConvertWorker()
         self.worker.finished.connect(lambda msg: print(msg))
         self.worker.start()
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = App()
